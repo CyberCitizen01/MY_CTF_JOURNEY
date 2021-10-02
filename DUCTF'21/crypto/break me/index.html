@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AESTIVATE ENERGY DRINKS</title>
+</head>
+<body>
+    <label for="FLAG" >FLAG: </label>
+    <input type="search" name="FLAG" placeholder="FLAG" id="FLAG" class="input-text" autocomplete="off"><br><br>
+    <label for="PLAIN TEXT">PLAIN TEXT: </label>
+    <input type="search" name="PLAIN TEXT" placeholder="PLAIN TEXT" id="PLAIN TEXT" class="input-text" autocomplete="off"><br><br>
+    <label for="KEY">KEY: </label>
+    <input type="search" name="KEY" placeholder="KEY" id="KEY" class="input-text" autocomplete="off"><br><br>
+    <b id="len"></b> <br><br>
+    <p id="payload" style="font-family:'Lucida Console', monospace"></p>
+    <p id="base64" style="font-family:'Lucida Console', monospace"></p>     <b id="lenbase64"></b>
+    <script>
+        const flag = document.getElementById('FLAG')
+        const pt = document.getElementById('PLAIN TEXT')
+        const key = document.getElementById('KEY')
+        const payload = document.getElementById('payload')
+        const base64 = document.getElementById('base64')
+        const lenbase64 = document.getElementById('lenbase64')
+        const len = document.getElementById('len')
+
+        function pad(m){
+            if(m.length % 16 == 0) return m
+            else{
+                m = m + '0'.repeat(16 - m.length % 16 )
+                return m
+            } 
+        }
+
+        function eventHandler(event){
+            event.preventDefault()
+            console.log(pad(pt.value + flag.value));
+            let padded = pad(flag.value + pt.value + key.value)
+            payload.innerHTML = padded.match(/.{1,16}/g).join('&#9;')
+            base64.innerHTML = btoa(padded)
+            lenbase64.innerHTML = btoa(padded).length
+            len.innerHTML = padded.length
+        }
+
+        flag.addEventListener('input', eventHandler)
+        pt.addEventListener('input', eventHandler)
+        key.addEventListener('input', eventHandler)
+    </script>
+</body>
+</html>
